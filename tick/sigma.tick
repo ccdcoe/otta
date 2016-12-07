@@ -1,8 +1,8 @@
-var infoSig = 2.5
-var warnSig = 3
+var infoSig = 1.5
+var warnSig = 2.5
 var critSig = 5
 
-var period = 300s
+var period = 3600s
 var every = 30s
 var bucket = 300s
 
@@ -22,15 +22,15 @@ var alert = data
     .as('sigma')
     .keep()
   |alert()
-    .id('[kapacitor] {{ index .Tags "src_ip"}}')
-    .message('{{ .ID }} {{ index .Tags "query" }} {{ .Level }} value:{{ index .Fields "stat" }}/{{ index .Fields "sigma" }}')
+    .id('[kapacitor] {{ index .Tags "query"}}')
+    .message('{{ .ID }} {{ .Level }} number of standard deviations exceeded threshold. Raw value is {{ index .Fields "stat" }}')
     .info(lambda: "sigma" > infoSig)
     .warn(lambda: "sigma" > warnSig)
     .crit(lambda: "sigma" > critSig)
 
 // Alert
 alert
-  .log('/tmp/otta.log')
+  //.log('/tmp/otta.log')
   .alerta()
-    .value('{{ index .Fields "stat" }}')
+    .value('{{ index .Fields "sigma" }}')
     .resource('{{ index .Tags "src_ip"}}')
