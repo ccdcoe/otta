@@ -23,7 +23,7 @@ var alert = data
     .keep()
   |alert()
     .id('[kapacitor] {{ index .Tags "src_ip"}}')
-    .message('{{ .ID }} {{ index .Tags "query" }} {{ .Level }} value:{{ "stat" }}/{{ "sigma" }}')
+    .message('{{ .ID }} {{ index .Tags "query" }} {{ .Level }} value:{{ index .Fields "stat" }}/{{ index .Fields "sigma" }}')
     .info(lambda: "sigma" > infoSig)
     .warn(lambda: "sigma" > warnSig)
     .crit(lambda: "sigma" > critSig)
