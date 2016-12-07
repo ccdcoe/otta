@@ -1,0 +1,35 @@
+var infoSig = 2.5
+var warnSig = 3
+var critSig = 5
+
+var period = 3600s
+var every = 30s
+var bucket = 300s
+
+var cluster = 'influx.yellow.ex'
+
+// Dataframe
+var data = batch
+  |query('''SELECT mean(count) AS stat FROM "telegraf"."autogen"."moloch_spi_queries" ''')
+    .cluster(cluster)
+    .period(period)
+    .every(every)
+    .groupBy(time(bucket), 'src_ip', 'query')
+
+// Thresholds
+var alert = data
+  |eval(lambda: sigma("stat"))
+    .as('sigma')
+    .keep()
+  |alert()
+    .id('[kapacitor] {{ index .Tags "src_ip"}}')
+    .message('{{ .ID }} {{ index .Tags "query" }} {{ .Level }} value:{{ index .Fields "count" }}')
+    .info(lambda: "sigma" > infoSig)
+    .warn(lambda: "sigma" > warnSig)
+    .crit(lambda: "sigma" > critSig)
+
+// Alert
+alert
+.alerta()
+  .value('{{ index .Fields "stat" }}')
+  .resource('{{ index .Tags "src_ip"}}')
