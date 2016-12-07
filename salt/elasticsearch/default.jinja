@@ -1,0 +1,8 @@
+{%- set javaheap = (grains['mem_total']/2|round(1, 'floor'))|int -%}
+ES_HEAP_SIZE={{ javaheap }}m
+ES_GROUP=elasticsearch
+ES_USER=elasticsearch
+LOG_DIR=/var/log/elasticsearch/
+ES_STARTUP_SLEEP_TIME=5
+CONF_DIR=/etc/elasticsearch
+ES_JAVA_OPTS="-Dmapper.allow_dots_in_name=true"

@@ -1,0 +1,15 @@
+{%- set vars = pillar['moloch'] -%}
+[Unit]
+Description=Moloch capture process
+After=network.target
+    
+[Service]
+ExecStartPre=chdir {{vars['deploy_dir']}}/viewer
+ExecStart=node viewer.js -c ../etc/config.ini 2>&1 | logger -t moloch-viewer -p daemon.notice
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+    
+[Install]
+WantedBy=multi-user.target
+Alias=moloch-viewer.service

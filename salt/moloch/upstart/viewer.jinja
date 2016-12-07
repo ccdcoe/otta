@@ -1,0 +1,15 @@
+{%- set vars = pillar['moloch'] -%}
+description    "Moloch viewer process"
+author         "CCDCOE"
+
+start on startup
+start on runlevel [2345]
+stop on runlevel [016]
+
+respawn
+
+script
+  chdir {{vars['deploy_dir']}}/viewer
+  echo $$ > /var/run/moloch-viewer.pid
+  exec node viewer.js -c ../etc/config.ini 2>&1 | logger -t moloch-viewer -p daemon.notice
+end script

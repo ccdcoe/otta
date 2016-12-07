@@ -1,0 +1,49 @@
+{%- set vars = pillar['elasticsearch'] -%}
+{%- set fqdn = grains['fqdn'] -%}
+{%- set clusterip = grains['ipv4'][1] -%}
+{%- set httpip = '127.0.0.1' -%}
+{%- if 'data-es' in grains['host'] -%}
+  {%- set master = 'false' -%}
+  {%- set data = 'true' -%}
+  {%- set http = 'false' -%}
+{%- elif 'master-es' in grains['host'] -%}
+  {%- set master = 'true' -%}
+  {%- set data = 'false' -%}
+  {%- set http = 'false' -%}
+{%- elif 'gw-es' in grains['host'] -%}
+  {%- set master = 'false' -%}
+  {%- set data = 'false' -%}
+  {%- set http = 'true' -%}
+  {%- set httpip = '0.0.0.0' -%}
+{%- else -%}
+  {%- set master = 'false' -%}
+  {%- set data = 'false' -%}
+  {%- set http = 'true' -%}
+  {%- set httpip = '127.0.0.1' -%}
+{%- endif -%}
+### MANAGED BY SALT ###
+---
+cluster:
+  name: helen
+discovery:
+  zen:
+    ping:
+      multicast:
+        enabled: false
+      unicast:
+        hosts:
+          - {{vars['masters'][0]}}
+http:
+  enabled: {{ http }}
+{% if httpip is defined and http == 'true' %}  
+  host: {{ httpip }} 
+{% endif %}
+network:
+  host: {{ clusterip }}
+node:
+  data: {{ data }}
+  master: {{ master }}
+  name: {{ fqdn }}
+path:
+  data: /var/lib/elasticsearch/
+  logs: /var/log/elasticsearch/

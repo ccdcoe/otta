@@ -1,0 +1,15 @@
+{%- set vars = pillar['moloch'] -%}
+[Unit]
+Description=Moloch capture process
+After=network.target
+    
+[Service]
+ExecStartPre=chdir {{vars['deploy_dir']}}
+ExecStart={{vars['deploy_dir']}}/bin/moloch-capture -c {{vars['deploy_dir']}}/etc/config.ini 2>&1 | logger -t moloch-capture -p daemon.notice
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+    
+[Install]
+WantedBy=multi-user.target
+Alias=moloch-capture.service

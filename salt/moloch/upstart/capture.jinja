@@ -1,0 +1,14 @@
+{%- set vars = pillar['moloch'] -%}
+description    "Moloch capture process"
+author         "CCDCOE"
+
+start on startup
+start on runlevel [2345]
+stop on runlevel [016]
+
+respawn
+
+script
+  chdir {{vars['deploy_dir']}}
+  exec {{vars['deploy_dir']}}/bin/moloch-capture -c {{vars['deploy_dir']}}/etc/config.ini 2>&1 | logger -t moloch-capture -p daemon.notice
+end script

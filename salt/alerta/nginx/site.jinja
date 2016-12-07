@@ -1,0 +1,16 @@
+{%- set vhost = grains['fqdn'] -%}
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server ipv6only=on;
+
+	root /srv/www/{{vhost}}/app;
+	index index.html index.htm;
+
+	server_name {{vhost}};
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+        access_log /var/log/nginx/{{vhost}}.log;
+        error_log /var/log/nginx/{{vhost}}.err;
+}
