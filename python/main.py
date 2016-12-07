@@ -41,7 +41,7 @@ ES_TYPE='expression'
 
 # a1 = src_ip
 FIELD_MAP = {
-    'a1': 'scr_ip',
+    'a1': 'src_ip',
     'p1': 'src_port'
 }
 

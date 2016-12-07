@@ -2,7 +2,7 @@ var infoSig = 2.5
 var warnSig = 3
 var critSig = 5
 
-var period = 3600s
+var period = 300s
 var every = 30s
 var bucket = 300s
 
@@ -23,13 +23,14 @@ var alert = data
     .keep()
   |alert()
     .id('[kapacitor] {{ index .Tags "src_ip"}}')
-    .message('{{ .ID }} {{ index .Tags "query" }} {{ .Level }} value:{{ index .Fields "count" }}')
+    .message('{{ .ID }} {{ index .Tags "query" }} {{ .Level }} value:{{ "stat" }}/{{ "sigma" }}')
     .info(lambda: "sigma" > infoSig)
     .warn(lambda: "sigma" > warnSig)
     .crit(lambda: "sigma" > critSig)
 
 // Alert
 alert
-.alerta()
-  .value('{{ index .Fields "stat" }}')
-  .resource('{{ index .Tags "src_ip"}}')
+  .log('/tmp/otta.log')
+  .alerta()
+    .value('{{ index .Fields "stat" }}')
+    .resource('{{ index .Tags "src_ip"}}')
