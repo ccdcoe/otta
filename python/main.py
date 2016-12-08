@@ -55,6 +55,11 @@ QUERIES = [
         'expression': '(port.dst == 80 || port.dst == 443 || port.dst == 8080) && protocols != http && vlan != 3611',
         'query_tag': 'http_port_not_http',
         'aggregate_field': 'a1'
+    },
+    {
+        'expression': 'protocols != syslog && vlan != 3611 && protocols == http && port.dst == 8291',
+        'query_tag': 'connection_to_known_beef_server',
+        'aggregate_field': 'a1'
     }
 ]
 
