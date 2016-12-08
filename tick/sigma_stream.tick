@@ -2,15 +2,14 @@ var infoSig = 1.5
 var warnSig = 2.5
 var critSig = 5
 
-var period = 3600s
-var every = 30s
-
 // Dataframe
-var data = batch
-  |query('''SELECT mean(count) AS stat FROM "telegraf"."autogen"."moloch_spi_queries" ''')
-    .period(period)
-    .every(every)
+var data = stream
+  |from()
+    .database('telegraf')
+    .retentionPolicy('autogen')
     .groupBy('src_ip', 'query')
+    |last('count')
+      .as('stat')
 
 // Thresholds
 var alert = data
