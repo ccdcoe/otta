@@ -57,10 +57,35 @@ QUERIES = [
         'aggregate_field': 'a1'
     },
     {
+        'expression': '(port.dst != 80 || port.dst != 443 || port.dst =! 8080 || port.dst =! 9200) && protocols == http && vlan != 3611',
+        'query_tag': 'http_non_std_port',
+        'aggregate_field': 'a1'
+    },
+    {
         'expression': 'protocols != syslog && vlan != 3611 && protocols == http && port.dst == 8291',
         'query_tag': 'connection_to_known_beef_server',
         'aggregate_field': 'a1'
-    }
+    },
+    {
+        'expression': 'port.dst == 25 && protocols != smtp && vlan != 3611',
+        'query_tag': 'not_smtp_std_port',
+        'aggregate_field': 'a1'
+    },
+    {
+        'expression': 'protocols == smtp && (port != 25 || port != 587)',
+        'query_tag': 'smtp_non_std_port',
+        'aggregate_field' = 'a1'
+    },
+    {
+        'expression': 'port.dst == 22 && protocols != ssh && vlan != 3611',
+        'query_tag': 'not_smtp_std_port',
+        'aggregate_field': 'a1'
+    },
+    {
+        'expression': 'protocols == ssh && port != 22 && vlan != 3611)',
+        'query_tag': 'smtp_non_std_port',
+        'aggregate_field' = 'a1'
+    },
 ]
 
 def getPeriod(interval=60):
