@@ -47,17 +47,22 @@ FIELD_MAP = {
 
 QUERIES = [
     {
-        'expression': 'protocols != syslog && vlan != 3611 && http.user-agent != mozilla && (http.user-agent == www.owasp.org || http.user-agent == sqlmap || http.user-agent == CPython)',
+        'expression': 'protocols != syslog && vlan != 3611 && protocols == http && (http.user-agent == www.owasp.org || http.user-agent == sqlmap || http.user-agent == dirbust || http.user-agent == libwww)',
         'query_tag': 'http_scanner_default_ua',
         'aggregate_field': 'a1'
     },
     {
-        'expression': '(port.dst == 80 || port.dst == 443 || port.dst == 8080) && protocols != http && vlan != 3611',
+        'expression': 'protocols != syslog && vlan != 3611 && protocols = http && http.user-agent != mozilla && http.user-agent != "BreakingPoint/1.x (http://bpointsys.com/)" && (http.user-agent == python || http.user-agent == CPython)',
+        'query_tag': 'http_python_ua',
+        'aggregate_field': 'a1'
+    },
+    {
+        'expression': '(port.dst == 80 || port.dst == 443 || port.dst == 8080 || port.dst == 9200 || port.dst == 8086) && protocols != http && vlan != 3611 && vlan != 3604 && (port.dst != 443 && protocols != tls) && tags != "acked-unseen-segment-dst" && tags != "out-of-order-src")',
         'query_tag': 'http_port_not_http',
         'aggregate_field': 'a1'
     },
     {
-        'expression': '(port.dst != 80 || port.dst != 443 || port.dst =! 8080 || port.dst =! 9200) && protocols == http && vlan != 3611',
+        'expression': '(port.dst != 80 && port.dst != 443 && port.dst != 8080 && port.dst != 9200 && port.dst != 8086) && protocols == http && vlan != 3611',
         'query_tag': 'http_non_std_port',
         'aggregate_field': 'a1'
     },
@@ -67,12 +72,12 @@ QUERIES = [
         'aggregate_field': 'a1'
     },
     {
-        'expression': 'port.dst == 25 && protocols != smtp && vlan != 3611',
+        'expression': 'port.dst == 25 && protocols != smtp && vlan != 3611 && vlan != 3611',
         'query_tag': 'not_smtp_std_port',
         'aggregate_field': 'a1'
     },
     {
-        'expression': 'protocols == smtp && (port != 25 || port != 587)',
+        'expression': 'protocols == smtp && (port != 25 || port != 587) && vlan != 3611',
         'query_tag': 'smtp_non_std_port',
         'aggregate_field': 'a1'
     },
