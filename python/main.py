@@ -74,7 +74,7 @@ QUERIES = [
     {
         'expression': 'protocols == smtp && (port != 25 || port != 587)',
         'query_tag': 'smtp_non_std_port',
-        'aggregate_field' = 'a1'
+        'aggregate_field': 'a1'
     },
     {
         'expression': 'port.dst == 22 && protocols != ssh && vlan != 3611',
@@ -84,7 +84,7 @@ QUERIES = [
     {
         'expression': 'protocols == ssh && port != 22 && vlan != 3611)',
         'query_tag': 'smtp_non_std_port',
-        'aggregate_field' = 'a1'
+        'aggregate_field': 'a1'
     },
 ]
 
