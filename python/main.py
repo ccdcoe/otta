@@ -57,7 +57,7 @@ QUERIES = [
         'aggregate_field': 'a1'
     },
     {
-        'expression': '(port.dst == 80 || port.dst == 443 || port.dst == 8080 || port.dst == 9200 || port.dst == 8086) && protocols != http && vlan != 3611 && vlan != 3604 && (port.dst != 443 && protocols != tls) && tags != "acked-unseen-segment-dst" && tags != "out-of-order-src")',
+        'expression': '(port.dst == 80 || port.dst == 443 || port.dst == 8080 || port.dst == 9200 || port.dst == 8086) && protocols != http && vlan != 3611 && vlan != 3604 && (port.dst != 443 && protocols != tls) && tags != "acked-unseen-segment-dst" && tags != "out-of-order-src"',
         'query_tag': 'http_port_not_http',
         'aggregate_field': 'a1'
     },
