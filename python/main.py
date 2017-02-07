@@ -72,7 +72,7 @@ QUERIES = [
         'aggregate_field': 'a1'
     },
     {
-        'expression': 'port.dst == 25 && protocols != smtp && vlan != 3611 && vlan != 3611',
+        'expression': 'port.dst == 25 && protocols != smtp && vlan != 3611',
         'query_tag': 'not_smtp_std_port',
         'aggregate_field': 'a1'
     },
@@ -82,12 +82,12 @@ QUERIES = [
         'aggregate_field': 'a1'
     },
     {
-        'expression': 'port.dst == 22 && protocols != ssh && vlan != 3611',
+        'expression': 'port.dst == 22 && protocols != ssh && vlan != 3611 && databytes != 0',
         'query_tag': 'not_ssh_std_port',
         'aggregate_field': 'a1'
     },
     {
-        'expression': 'protocols == ssh && port != 22 && vlan != 3611',
+        'expression': 'protocols == ssh && port != 22 && vlan != 3611 && databytes != 0',
         'query_tag': 'ssh_non_std_port',
         'aggregate_field': 'a1'
     },
