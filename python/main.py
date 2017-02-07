@@ -18,6 +18,7 @@ def parse_arguments():
     parser.add_argument('-p', '--password', default='admin')
     parser.add_argument('-es','--elasticsearch', nargs='+', required=False, default=['localhost'])
     parser.add_argument('-if', '--influx', default='localhost')
+    parser.add_argument('-d', '--debug', action='store_true', default=False)
     return parser.parse_args()
 
 ARGS = parse_arguments()
@@ -30,6 +31,7 @@ PORT=8005
 SSL=False
 USER=ARGS.user
 PASS=ARGS.password
+DEBUG=args.debug
 
 INFLUX_SERVER=ARGS.influx
 MEASUREMENT = 'moloch_spi_queries'
@@ -81,16 +83,16 @@ QUERIES = [
         'query_tag': 'smtp_non_std_port',
         'aggregate_field': 'a1'
     },
-    #{
-    #    'expression': 'port.dst == 22 && protocols != ssh && vlan != 3611 && databytes != 0',
-    #    'query_tag': 'not_ssh_std_port',
-    #    'aggregate_field': 'a1'
-    #},
-    #{
-    #    'expression': 'protocols == ssh && port != 22 && vlan != 3611 && databytes != 0',
-    #    'query_tag': 'ssh_non_std_port',
-    #    'aggregate_field': 'a1'
-    #},
+    {
+        'expression': 'port.dst == 22 && protocols != ssh && vlan != 3611 && databytes != 0',
+        'query_tag': 'not_ssh_std_port',
+        'aggregate_field': 'a1'
+    },
+    {
+        'expression': 'protocols == ssh && port != 22 && vlan != 3611 && databytes != 0',
+        'query_tag': 'ssh_non_std_port',
+        'aggregate_field': 'a1'
+    },
     {
         'expression': 'protocols == dns && dns.query.type == AXFR && vlan != 3611',
         'query_tag': 'dns_attempted_zone_transfer',
@@ -146,6 +148,9 @@ def queryMoloch(url, startTime, stopTime, query):
     }
     spi_request = "%s?%s" % (url, urllib.urlencode(fields))
     spi_ret = requests.get(spi_request, auth=HTTPDigestAuth(USER, PASS)).text
+    if DEBUG == True:
+        print 'spi_ret: '
+        print spi_ret
     json = {}
     for line in spi_ret.splitlines():
         data = line.split(',')
@@ -178,6 +183,10 @@ def main():
         stopTime = startTime
         bulk = []
         for query in queries:
+            if DEBUG == True:
+                print '-----------------'
+                print query['expression']
+                print query['query_tag']
             bulk.extend(queryMoloch(url=url, startTime=startTime, stopTime=stopTime, query=query))
         flushInflux(bulk)
 
