@@ -87,7 +87,7 @@ QUERIES = [
         'aggregate_field': 'a1'
     },
     {
-        'expression': 'protocols == ssh && port != 22 && vlan != 3611)',
+        'expression': 'protocols == ssh && port != 22 && vlan != 3611',
         'query_tag': 'ssh_non_std_port',
         'aggregate_field': 'a1'
     },
