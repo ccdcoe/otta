@@ -81,16 +81,16 @@ QUERIES = [
         'query_tag': 'smtp_non_std_port',
         'aggregate_field': 'a1'
     },
-    {
-        'expression': 'port.dst == 22 && protocols != ssh && vlan != 3611 && databytes != 0',
-        'query_tag': 'not_ssh_std_port',
-        'aggregate_field': 'a1'
-    },
-    {
-        'expression': 'protocols == ssh && port != 22 && vlan != 3611 && databytes != 0',
-        'query_tag': 'ssh_non_std_port',
-        'aggregate_field': 'a1'
-    },
+    #{
+    #    'expression': 'port.dst == 22 && protocols != ssh && vlan != 3611 && databytes != 0',
+    #    'query_tag': 'not_ssh_std_port',
+    #    'aggregate_field': 'a1'
+    #},
+    #{
+    #    'expression': 'protocols == ssh && port != 22 && vlan != 3611 && databytes != 0',
+    #    'query_tag': 'ssh_non_std_port',
+    #    'aggregate_field': 'a1'
+    #},
     {
         'expression': 'protocols == dns && dns.query.type == AXFR && vlan != 3611',
         'query_tag': 'dns_attempted_zone_transfer',
