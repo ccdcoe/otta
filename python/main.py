@@ -91,6 +91,11 @@ QUERIES = [
         'query_tag': 'ssh_non_std_port',
         'aggregate_field': 'a1'
     },
+    {
+        'expression': 'protocols == dns && dns.query.type == AXFR && vlan != 3611',
+        'query_tag': 'ssh_non_std_port',
+        'aggregate_field': 'a1'
+    }
 ]
 
 def getPeriod(interval=60):
