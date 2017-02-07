@@ -93,7 +93,7 @@ QUERIES = [
     },
     {
         'expression': 'protocols == dns && dns.query.type == AXFR && vlan != 3611',
-        'query_tag': 'ssh_non_std_port',
+        'query_tag': 'dns_attempted_zone_transfer',
         'aggregate_field': 'a1'
     }
 ]
