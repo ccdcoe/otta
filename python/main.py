@@ -31,7 +31,7 @@ PORT=8005
 SSL=False
 USER=ARGS.user
 PASS=ARGS.password
-DEBUG=args.debug
+DEBUG=ARGS.debug
 
 INFLUX_SERVER=ARGS.influx
 MEASUREMENT = 'moloch_spi_queries'
