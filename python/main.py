@@ -169,8 +169,11 @@ def queryMoloch(url, startTime, stopTime, query):
     spi_request = "%s?%s" % (url, urllib.urlencode(fields))
     spi_ret = requests.get(spi_request, auth=HTTPDigestAuth(USER, PASS)).text
     if DEBUG == True:
-        print 'spi_ret: '
-        print spi_ret
+        print 'request:'
+        print spi_request
+        if spi_ret:
+            print 'spi_ret: '
+            print spi_ret
     json = {}
     for line in spi_ret.splitlines():
         data = line.split(',')
