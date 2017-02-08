@@ -102,7 +102,17 @@ QUERIES = [
         'expression': 'protocols == http && port.dst == 443',
         'query_tag': 'plaintext_http_port_443',
         'aggregate_field': 'a1'
-    }
+    },
+    {
+        'expression': 'protocols == http && http.uri == *../..*',
+        'query_tag': 'http_path_traversal',
+        'aggregate_field': 'a1'
+    },
+    {
+        'expression': 'protocols == http && http.uri == "*%3E"',
+        'query_tag': 'http_xss,
+        'aggregate_field': 'a1'
+    },
     #{
     #    'expression': 'protocols == http && http.host != /[a-z]/ && vlan != 3611',
     #    'query_tag': 'http_traffic_no_human_hostname',
