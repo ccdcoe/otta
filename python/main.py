@@ -110,7 +110,7 @@ QUERIES = [
     },
     {
         'expression': 'protocols == http && http.uri == "*%3E"',
-        'query_tag': 'http_xss,
+        'query_tag': 'http_xss',
         'aggregate_field': 'a1'
     },
     #{
