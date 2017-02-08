@@ -97,7 +97,17 @@ QUERIES = [
         'expression': 'protocols == dns && dns.query.type == AXFR && vlan != 3611',
         'query_tag': 'dns_attempted_zone_transfer',
         'aggregate_field': 'a1'
+    },
+    {
+        'expression': 'protocols == http && port.dst == 443',
+        'query_tag': 'plaintext_http_port_443',
+        'aggregate_field': 'a1'
     }
+    #{
+    #    'expression': 'protocols == http && http.host != /[a-z]/ && vlan != 3611',
+    #    'query_tag': 'http_traffic_no_human_hostname',
+    #    'aggregate_field': 'a1'
+    #}
 ]
 
 def getPeriod(interval=60):
